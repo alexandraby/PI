@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='login.css') }}">
+</head>
+<header>
+    <a href="index.html">Página Inicial</a> &nbsp; <a href="cadastro.html">Cadastre-se</a>  &nbsp; <a href="login.html">Login</a>  &nbsp; <a href="categorias.html">Categorias</a> 
+    <a href="Publicacoes.html">&nbsp;Publicações</a>
+    <br> &nbsp;
+</header>
+<body>
+    <br>
+    <br>
+<h2>Login:</h2>
+    <form method="POST" action="/login" onsubmit="return realizarLogin">
+        <label for="email">Usuário:</label>
+        <input type="email" name="email" placeholder="Digite Seu E-mail:" autocomplete="off" required>
+        <label for="password">Senha:</label>
+        <input type="password" name="senha" placeholder="Digite Sua Senha:" autocomplete="off" required>
+
+        <<button onclick="realizarLogin()">Login</button>
+
+    </form>
+    <div id="mensagem"></div>
+    <script>
+     function realizarLogin() {
+    var email = document.getElementById('email').value;
+    var senha = document.getElementById('senha').value;
+
+    var formData = new URLSearchParams();
+    formData.append('email', email);
+    formData.append('senha', senha);
+
+    fetch('/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData.toString(),  
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`Erro HTTP - ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        document.getElementById('mensagem').innerHTML = data.message;
+        if (data.success) {
+            console.log('Redirecionando para /home');
+            window.location.href = '/home';
+        }
+    })
+    .catch(error => {
+        console.error('Erro durante a solicitação:', error);
+        document.getElementById('mensagem').innerHTML = 'Erro durante a solicitação. Por favor, tente novamente.';
+    });
+
+    return false;  
+}
+
+    </script>
+</body>
+</html>

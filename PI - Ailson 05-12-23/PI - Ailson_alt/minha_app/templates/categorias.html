@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="PT-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='categorias.css') }}">
+    <title>Categorias</title>
+
+    <header>
+        <a href="index.html">Página Inicial</a> &nbsp; <a href="cadastro.html">Cadastre-se</a> &nbsp; <a
+            href="login.html">Login</a> &nbsp; <a href="categorias.html">Categorias</a>
+        <a href="{{ url_for('publicacoes_page') }}">&nbsp;Publicações</a><a href="Publicacoes.html">&nbsp;Publicacoes</a><a
+            href="minhas.publicacoes.html">&nbsp;Minhas Publocacoes</a>
+        <br> &nbsp;
+    </header>
+</head>
+
+<body>
+    <h3>Categorias</h3>
+    <nav>
+        <ul>
+            <li class="categoria"><a href="#acao">Ação</a></li>
+            <li class="categoria"><a href="#aventura">Aventura</a></li>
+            <li class="categoria"><a href="#drama">Drama</a></li>
+            <li class="categoria"><a href="#sci-fi">Sci-fi</a></li>
+            <li class="categoria"><a href="#romance">Romance</a></li>
+            <li class="categoria"><a href="#misterio">Misterio</a></li>
+            <li class="categoria"><a href="#fantasia">Fantasia</a></li>
+            <li class="categoria"><a href="#sobrenatural">Sobrenatural</a></li>
+            <li class="categoria"><a href="#suspense">Suspense</a></li>
+            <li class="categoria"><a href="#AU">Universo Alternativo</a></li>
+        </ul>
+    </nav>
+
+    <br>
+
+    <section id="sci-fi">
+        <h2>Ficção</h2>
+        <ul>
+            <li><a href="{{ url_for('publicacoes_page', categoria='sci-fi') }}">Ficção</a></li>
+
+        </ul>
+    </section>
+
+
+    <section id="aventura">
+        <h2>Aventura</h2>
+        <ul>
+            <li><a href="{{ url_for('publicacoes_page', categoria='aventura') }}">Aventura</a></li>
+
+        </ul>
+    </section>
+
+
+    <section id="drama">
+        <h2>Drama</h2>
+        <ul>
+            <li><a href="{{ url_for('publicacoes_page', categoria='acao') }}">Ação</a></li>
+
+        </ul>
+    </section>
+
+    <section id="romance">
+        <h2>Romance</h2>
+        <ul>
+            <li><a href="{{ url_for('publicacoes_page', categoria='romance') }}">Romance</a></li>
+
+        </ul>
+    </section>
+
+
+    <section id="sobrenatural">
+        <h2>Sobrenatural</h2>
+        <ul>
+            <li><a href="{{ url_for('publicacoes_page', categoria='sobrenatural') }}">Sobrenatural</a></li>
+        </ul>
+    </section>
+
+    <section id="fantasia">
+        <h2>Fantasia</h2>
+        <ul>
+            <li><a href="{{ url_for('publicacoes_page', categoria='fantasia') }}">Fantasia</a></li>
+        </ul>
+    </section>
+
+    <section id="misterio">
+        <h2>Misterio</h2>
+        <ul>
+            <li><a href="{{ url_for('publicacoes_page', categoria='misterio') }}">Misterio</a></li>
+        </ul>
+    </section>
+
+    <section id="suspense">
+        <h2>Suspense</h2>
+        <ul>
+            <li><a href="{{ url_for('publicacoes_page', categoria='suspense') }}">Suspense</a></li>
+        </ul>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var categorias = document.querySelectorAll('.categoria');
+            categorias.forEach(function (categoria) {
+                categoria.addEventListener('click', function (event) {
+                    event.preventDefault(); // Evitar o comportamento padrão do link
+                    var categoriaSelecionada = categoria.getAttribute('href').substring(1);
+                    window.location.href = "{{ url_for('publicacoes_page') }}/" + categoriaSelecionada;
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

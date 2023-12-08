@@ -1,0 +1,141 @@
+/* Estilos gerais */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+h1 {
+    background-color: #ababab;
+    text-align: center;
+    padding: 20px;
+}
+
+h2{
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+}
+
+form {
+    width: 650px;
+    margin: auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 5px #ccc;
+    box-sizing: border-box;
+    height:30cap;
+    border:0px solid black;
+    padding: 33px;
+    box-sizing: border-box;
+}
+
+
+label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+}
+
+input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #555;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    form {
+        width: 90%;
+    }
+}
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+header {
+    background-color: #3b3a3a;
+    color: #fff;
+    text-align: left;
+    padding: 10px;
+}
+body {
+    background-color: #f3efef;
+    color: #000506;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #34495e;
+    padding: 15px;
+}
+
+header a {
+    color: #ecf0f1;
+    text-decoration: none;
+    margin-right: 15px;
+}
+
+h3 {
+    background-color: #d22323;
+    color: #0eb3dc;
+    text-align: center;
+    padding: 20px;
+    margin: 0;
+}
+
+.category-container {
+    background-color: #34495e;
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.category-container button {
+    margin-left: 10px;
+    background-color: #ecf0f1;
+    color: #34495e;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    margin: 15px 0;
+}
+
+ul li button {
+    margin-left: 10px;
+    background-color: #ecf0f1;
+    color: #34495e;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 3px;
+}

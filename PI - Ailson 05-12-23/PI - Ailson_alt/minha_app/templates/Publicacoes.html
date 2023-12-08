@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="PT-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Publicações</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='publicacoes.css') }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+
+<body>
+    <header>
+        <a href="{{ url_for('pagina_inicial') }}">Página Inicial</a> &nbsp; <a href="{{ url_for('cadastro') }}">Cadastre-se</a> &nbsp; <a
+            href="{{ url_for('logar') }}">Login</a> &nbsp; <a href="{{ url_for('categorias') }}">Categorias</a>
+        <a href="{{ url_for('publicacoes_page') }}">&nbsp;Publicações</a><a href="{{ url_for('minhas_publicacoes') }}">&nbsp;Minhas Publicacoes</a>
+    </header>
+
+    <br>
+    <br>
+    <h3>Faça aqui suas publicações:</h3>
+    <br>
+
+    <!-- Formulário de Publicação -->
+    <form id="formPublicacao" action="{{ url_for('publicar') }}" method="post">
+        <textarea id="conteudo" name="conteudo" placeholder="Digite aqui..." spellcheck="false" required></textarea>
+        <br>
+        <label for="categoria">Categoria:</label>
+        <select id="categoria" name="categoria" required>
+            <option value="Ação">Ação</option>
+            <option value="Aventura">Aventura</option>
+            <option value="Drama">Drama</option>
+            <option value="Fantasia">Fantasia</option>
+            <option value="Misterio">Misterio</option>
+            <option value="Romance">Romance</option>
+            <option value="Sobrenatural">Sobrenatural</option>
+        </select>
+        <br>
+        <button type="submit" class="btn btn-success">Postar</button>
+    </form>
+    <br>
+
+    <!-- Exibir Publicação -->
+    <div>
+        <ul>
+            {% for publicacao in publicacoes %}
+            <li id="{{ publicacao.id }}">
+                {{ publicacao.conteudo }}
+                <button type="button" onclick="editarPublicacao('{{ publicacao.id }}', '{{ publicacao.conteudo }}', '{{ publicacao.categoria }}')" class="btn btn-secondary">Editar</button>
+                <form method="post" action="{{ url_for('excluir_publicacao', publicacao_id=publicacao.id) }}" style="display: inline;">
+                    <button type="submit" class="btn btn-danger">Excluir</button>
+                </form>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Exibir Categorias -->
+        <h5>&nbsp;&nbsp;Categorias</h5>
+        <ul>
+            {% for categoria in categorias %}
+            <li><a href="{{ url_for('publicacoes_page', categoria=categoria) }}">{{ categoria }}</a></li>
+            {% endfor %}
+        </ul>
+
+        <h3>&nbsp;&nbsp;Todas as Publicações</h3>
+        <ul>
+            {% for publicacao in publicacoes %}
+            <li id="{{ publicacao.id }}">
+                {{ publicacao.conteudo }} (Categoria: {{ publicacao.categoria }})
+            </li>
+            {% endfor %}
+        </ul>
+
+        <!-- Exibr as publicações dentro da categoria selecionada -->
+        <h5>&nbsp;&nbsp;Publicações Categoria: {% if categoria_selecionada %}{{ categoria_selecionada }}{% else %}Todas{% endif %}</h5>
+        <ul>
+            {% for publicacao in publicacoes %}
+            {% if not categoria_selecionada or publicacao.categoria == categoria_selecionada %}
+            <li id="{{ publicacao.id }}">
+                {{ publicacao.conteudo }} (Categoria: {{ publicacao.categoria }})
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Formulário de Edição -->
+    <div id="formEdicao" style="display: none;">
+        <h2>Editar Publicação</h2>
+        <form id="formEditarPublicacao" onsubmit="event.preventDefault(); salvarEdicao();">
+            <input type="hidden" id="publicacaoId" name="publicacaoId">
+            <textarea id="conteudoEdicao" name="conteudoEdicao" spellcheck="false" required></textarea>
+            <br>
+            <label for="categoriaEdicao">Categoria:</label>
+            <input type="text" id="categoriaEdicao" name="categoriaEdicao" readonly>
+            <br>
+            <button type="submit" class="btn btn-success">Salvar</button>
+            <button type="button" onclick="cancelarEdicao()" class="btn btn-danger">Cancelar</button>
+        </form>
+    </div>
+
+    <script>
+        function editarPublicacao(publicacaoId, conteudo, categoria) {
+            document.getElementById('publicacaoId').value = publicacaoId;
+            document.getElementById('conteudoEdicao').value = conteudo;
+            document.getElementById('categoriaEdicao').value = categoria;
+            document.querySelector('div h3:nth-child(2)').style.display = 'none';
+            document.querySelector('div ul:nth-child(3)').style.display = 'none';
+            document.getElementById('formEdicao').style.display = 'block';
+        }
+
+        function salvarEdicao() {
+            var publicacaoId = document.getElementById('publicacaoId').value;
+            var novoConteudo = document.getElementById('conteudoEdicao').value;
+            var novaCategoria = document.getElementById('categoriaEdicao').value;
+
+            // Encontrar a publicação no array
+            var publicacaoIndex = publicacoes.findIndex(function (item) {
+                return item.id == publicacaoId;
+            });
+
+            // Verificar se a publicação foi encontrada
+            if (publicacaoIndex !== -1) {
+                // Atualizar o conteúdo e a categoria da publicação no array
+                publicacoes[publicacaoIndex].conteudo = novoConteudo;
+                publicacoes[publicacaoIndex].categoria = novaCategoria;
+
+                // Atualizar o texto na lista de publicações
+                var liElement = document.getElementById(publicacaoId);
+                if (liElement) {
+                    liElement.textContent = novoConteudo + " (Categoria: " + novaCategoria + ")";
+                }
+
+                // Restaurar a exibição da lista de publicações e ocultar o formulário de edição
+                document.querySelector('div h3:nth-child(2)').style.display = 'block';
+                document.querySelector('div ul:nth-child(3)').style.display = 'block';
+                document.getElementById('formEdicao').style.display = 'none';
+
+                // Limpar os campos do formulário de edição
+                document.getElementById('publicacaoId').value = '';
+                document.getElementById('conteudoEdicao').value = '';
+                document.getElementById('categoriaEdicao').value = '';
+
+                console.log("Publicação Atualizada com Sucesso!");
+            } else {
+                console.error("Publicação não encontrada no array.");
+            }
+        }
+
+        function cancelarEdicao() {
+            document.querySelector('div h3:nth-child(2)').style.display = 'block';
+            document.querySelector('div ul:nth-child(3)').style.display = 'block';
+            document.getElementById('formEdicao').style.display = 'none';
+
+            // Limpar os campos do formulário de edição
+            document.getElementById('publicacaoId').value = '';
+            document.getElementById('conteudoEdicao').value = '';
+            document.getElementById('categoriaEdicao').value = '';
+        }
+    </script>
+</body>
+
